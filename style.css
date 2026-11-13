@@ -1,0 +1,273 @@
+:root {
+  --primary: #3f6fd1;
+  --primary-dark: #2b4f9e;
+  --bg: #f4f6fb;
+  --card-bg: #ffffff;
+  --text: #1f2430;
+  --muted: #68707f;
+  --border: #e4e8f0;
+  --radius: 14px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.top-bar {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  padding: 18px 28px;
+}
+
+.logo { display: flex; align-items: center; gap: 14px; }
+.logo-icon { font-size: 34px; }
+.top-bar h1 { margin: 0; font-size: 22px; }
+.subtitle { margin: 2px 0 0; font-size: 13px; opacity: 0.85; }
+
+main {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 20px;
+  padding: 22px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; }
+}
+
+.viewer-section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+}
+
+#main-viewer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  --poster-color: transparent;
+}
+
+/* ---- Xona foni (devor + pol), xona turiga qarab rangi o'zgaradi ---- */
+.room-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transition: background 0.4s ease;
+}
+
+.room-wall {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 68%;
+  transition: background 0.4s ease;
+}
+
+.room-floor {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 32%;
+  transform: perspective(300px) rotateX(35deg);
+  transform-origin: bottom;
+  transition: background 0.4s ease;
+}
+
+.room-window {
+  position: absolute;
+  top: 14%;
+  right: 10%;
+  width: 90px;
+  height: 110px;
+  border: 6px solid rgba(255,255,255,0.55);
+  border-radius: 4px;
+  background: linear-gradient(180deg, #bcd9f7, #e8f3ff);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.05);
+}
+.room-window::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 6px;
+  background: rgba(255,255,255,0.55);
+  transform: translateX(-50%);
+}
+
+/* Yashash xonasi: iliq kulrang devor, yog'och pol */
+.room-bg.room-living .room-wall { background: linear-gradient(180deg, #e7e2da 0%, #d8d2c6 100%); }
+.room-bg.room-living .room-floor { background: repeating-linear-gradient(90deg, #a9794f, #a9794f 28px, #9c6d45 28px, #9c6d45 30px); }
+
+/* Yotoqxona: yumshoq pushti-siyohrang devor, parket pol */
+.room-bg.room-bedroom .room-wall { background: linear-gradient(180deg, #ece0ef 0%, #ddd0e6 100%); }
+.room-bg.room-bedroom .room-floor { background: repeating-linear-gradient(90deg, #c9a37a, #c9a37a 26px, #bb9369 26px, #bb9369 28px); }
+
+/* Oshxona: och moviy-oq devor, plitka pol */
+.room-bg.room-kitchen .room-wall { background: linear-gradient(180deg, #e3f1ee 0%, #cfe6e1 100%); }
+.room-bg.room-kitchen .room-floor {
+  background-color: #e9e4da;
+  background-image:
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0,0,0,0.06) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+/* Barchasi (default): neytral studiya foni */
+.room-bg.room-all .room-wall { background: linear-gradient(180deg, #eef1f8 0%, #e2e7f2 100%); }
+.room-bg.room-all .room-floor { background: linear-gradient(180deg, #d7dcea, #c7cee0); }
+.room-bg.room-all .room-window { display: none; }
+
+/* ---- Animatsiya boshqaruvi ---- */
+.anim-controls {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  gap: 8px;
+  background: rgba(255,255,255,0.9);
+  padding: 6px 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  align-items: center;
+}
+.anim-btn {
+  border: none;
+  background: var(--primary);
+  color: white;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.anim-select {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 5px 6px;
+  font-size: 12.5px;
+  background: white;
+  color: var(--text);
+}
+
+.ar-button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 6px 16px rgba(63,111,209,0.35);
+  cursor: pointer;
+}
+
+.progress-bar {
+  display: block;
+  width: 60%;
+  height: 6px;
+  max-width: 300px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.1);
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+.update-bar {
+  background: var(--primary);
+  width: 0%;
+  height: 100%;
+}
+
+.viewer-info { padding: 18px 20px; border-top: 1px solid var(--border); }
+.viewer-info h2 { margin: 0 0 6px; font-size: 19px; }
+.viewer-info p { margin: 0 0 10px; color: var(--muted); font-size: 14px; }
+.controls-hint { font-size: 12.5px; color: var(--muted); background: var(--bg); padding: 8px 12px; border-radius: 10px; }
+
+.catalog-section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 18px;
+}
+.catalog-section h2 { margin-top: 0; font-size: 17px; }
+
+.room-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.room-tab {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--muted);
+}
+.room-tab.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.catalog-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  background: var(--bg);
+  transition: 0.15s ease;
+}
+.catalog-item:hover { border-color: var(--primary); transform: translateY(-2px); }
+.catalog-item.selected { border-color: var(--primary); background: #eaf0fd; }
+
+.catalog-item model-viewer {
+  width: 100%;
+  height: 90px;
+  pointer-events: none;
+  background: white;
+  border-radius: 8px;
+}
+
+.catalog-item .item-label {
+  margin-top: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 16px;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AR Interyer Dizayni Ilovasi</title>
+<link rel="stylesheet" href="style.css" />
+<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+<script nomodule src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer-legacy.js"></script>
+</head>
+<body>
+
+  <header class="top-bar">
+    <div class="logo">
+      <span class="logo-icon">🏠</span>
+      <div>
+        <h1>AR Interyer Dizayni</h1>
+        <p class="subtitle">Sun'iy intellekt va raqamli tex. fakulteti — VR/AR texnologiyalari</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="viewer-section">
+      <div class="stage" id="stage">
+        <div class="room-bg" id="room-bg">
+          <div class="room-wall"></div>
+          <div class="room-floor"></div>
+          <div class="room-window"></div>
+        </div>
+
+        <model-viewer
+          id="main-viewer"
+          src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+          ios-src=""
+          alt="Tanlangan mebel modeli"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          ar-placement="floor"
+          camera-controls
+          auto-rotate
+          rotation-per-second="18deg"
+          shadow-intensity="1.1"
+          shadow-softness="0.8"
+          exposure="1"
+          environment-image="neutral"
+        >
+          <button slot="ar-button" id="ar-button" class="ar-button">
+            📱 Xonamga AR orqali joylashtirish
+          </button>
+          <div class="progress-bar" slot="progress-bar">
+            <div class="update-bar"></div>
+          </div>
+        </model-viewer>
+
+        <div class="anim-controls" id="anim-controls" hidden>
+          <button id="anim-toggle" class="anim-btn">⏸ To'xtatish</button>
+          <select id="anim-select" class="anim-select"></select>
+        </div>
+      </div>
+
+      <div class="viewer-info">
+        <h2 id="item-name">Zamonaviy divan</h2>
+        <p id="item-desc">Yashash xonasi uchun mo'ljallangan, 3 o'rinli zamonaviy divan.</p>
+        <div class="controls-hint">
+          🖱️ Sichqoncha bilan aylantiring · 📱 Telefonda "AR" tugmasini bosib xonangizga joylashtiring
+        </div>
+      </div>
+    </section>
+
+    <aside class="catalog-section">
+      <h2>Mebel katalogi</h2>
+      <div class="room-tabs">
+        <button class="room-tab active" data-room="all">Barchasi</button>
+        <button class="room-tab" data-room="living">Yashash xonasi</button>
+        <button class="room-tab" data-room="bedroom">Yotoqxona</button>
+        <button class="room-tab" data-room="kitchen">Oshxona</button>
+      </div>
+      <div id="catalog-grid" class="catalog-grid"></div>
+    </aside>
+  </main>
+
+  <footer>
+    <p>Bajardi: Karimov Xolbek · Qabul qildi: D. Ismoilov · Samarqand Davlat Universiteti, 2026-2027</p>
+  </footer>
+
+  <script src="furniture-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
